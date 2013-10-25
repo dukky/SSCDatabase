@@ -16,7 +16,7 @@ public class CreateDB {
 	Random random = new Random(54123);
 
 	public static void main(String[] args) {
-		new CreateDB().cleanDatabase();
+		new CreateDB(DBConnect.connect()).cleanDatabase();
 	}
 
 	public void cleanDatabase() {
@@ -34,8 +34,9 @@ public class CreateDB {
 		}
 	}
 
-	public CreateDB() {
-		this.conn = DBConnect.connect();
+	public CreateDB(Connection conn) {
+		this.conn = conn;
+		//this.conn = DBConnect.connect();
 	}
 
 	public void dropTables() {
@@ -230,12 +231,13 @@ public class CreateDB {
 					+ "(3, 5, 5, 1, 1, 65, 'Reasonable understanding of algorithms and ai concepts')");
 
 			for (int i = 6; i <= 100; ++i) {
+				for(int j = 0; j <5; j++) {
 				int sid = i;
-				int cid = random.nextInt(99) + 1;
-				int year = random.nextInt(4) + 1;
-				int sesid = random.nextInt(1) + 1;
-				int tid = random.nextInt(2) + 1;
-				int mark = random.nextInt(99) + 1;
+				int cid = random.nextInt(100) + 1;
+				int year = random.nextInt(5) + 1;
+				int sesid = random.nextInt(2) + 1;
+				int tid = random.nextInt(3) + 1;
+				int mark = random.nextInt(100) + 1;
 				String notes = "Notes for mark " + i;
 
 				stmt.executeUpdate("INSERT INTO Marks "
@@ -243,6 +245,7 @@ public class CreateDB {
 						+ "VALUES (" + sid + ", " + cid + ", " + year + ", "
 						+ sesid + ", " + tid + ", " + mark + ", '" + notes
 						+ "')");
+				}
 
 			}
 
