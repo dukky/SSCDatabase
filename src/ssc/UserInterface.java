@@ -15,15 +15,26 @@ public class UserInterface {
 	Scanner s;
 	Connection conn;
 
+	/**
+	 * Create an instance of the UserInterface class
+	 */
 	public UserInterface() {
 		this.s = new Scanner(System.in);
 		this.conn = DBConnect.connect();
 	}
 
+	/**
+	 * Main method. Creates an instance of the class and then runs it
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new UserInterface().run();
 	}
 
+	/**
+	 * (Actual) main method. Forever calls showMenu() in a loop and switches
+	 * on the result in order to perform the actions that the menu offers.
+	 */
 	public void run() {
 		while (true) {
 			switch (showMenu()) {
@@ -55,6 +66,9 @@ public class UserInterface {
 		}
 	}
 
+	/**
+	 * Produces a report for a specific year and session
+	 */
 	private void produceReport() {
 		String sql = "SELECT m.courseID, c.coursename, COUNT(m.mark), AVG(m.mark) "
 				+ "FROM marks m, course c WHERE m.courseID = c.courseID "
@@ -62,6 +76,7 @@ public class UserInterface {
 				+ "GROUP BY m.courseID, c.courseName";
 		try {
 			System.out.println("Please enter the desired year: (1-5)");
+			s.nextLine();
 			int year = s.nextInt();
 			s.nextLine();
 			System.out.println("Please enter the desired session: (1-3): ");
@@ -87,6 +102,11 @@ public class UserInterface {
 		}
 	}
 
+	/**
+	 * Produces a transcript for a specific student, showing their details and
+	 * All marks.
+	 * 
+	 */
 	private void produceTranscript() {
 		System.out
 				.println("Please enter the student ID to produce a transcript for:");
@@ -170,6 +190,9 @@ public class UserInterface {
 
 	}
 
+	/**
+	 * Adds a mark to the database for a specific student, course, year and session.
+	 */
 	private void addMarks() {
 		try {
 			System.out.println("Please enter student ID of student: ");
@@ -221,6 +244,9 @@ public class UserInterface {
 
 	}
 
+	/**
+	 * Registers a new student with the database
+	 */
 	private void registerStudent() {
 		String specifiySID;
 		boolean askSID = false;
@@ -336,6 +362,10 @@ public class UserInterface {
 		}
 	}
 
+	/**
+	 * Shows the menu and asks the user for input
+	 * @return the option on the menu that the user chose
+	 */
 	private int showMenu() {
 		System.out.println();
 		System.out

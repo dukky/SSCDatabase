@@ -8,6 +8,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A class used to create, drop and populate tables in the database.
+ * @author Andreas
+ *
+ */
 public class CreateDB {
 
 	private String[] tables = { "NextOfKin", "StudentContact", "Marks",
@@ -15,10 +20,18 @@ public class CreateDB {
 	private Connection conn;
 	Random random = new Random(54123);
 
+	/**
+	 * Main method was used for testing the class
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new CreateDB(DBConnect.connect()).cleanDatabase();
 	}
 
+	/**
+	 * Cleans the database by first dropping all the tables, then creating all the tables
+	 * then populating all the tables.
+	 */
 	public void cleanDatabase() {
 		try {
 			conn.setAutoCommit(false);
@@ -34,11 +47,21 @@ public class CreateDB {
 		}
 	}
 
+	/**
+	 * Create an instance of the class and supply it with a connection object
+	 * Allowing it to access the database.
+	 * (This could have also been done by using static methods and the class creating its
+	 * own connection or a connection being supplied when calling th cleanDatabase method.)
+	 * @param conn The connection object to use.
+	 */
 	public CreateDB(Connection conn) {
 		this.conn = conn;
 		//this.conn = DBConnect.connect();
 	}
 
+	/**
+	 * (Attempts to) Drop all the tables in the database, calls dropTable
+	 */
 	public void dropTables() {
 
 		for (String table : tables) {
@@ -47,6 +70,10 @@ public class CreateDB {
 		System.out.println("Successfully dropped all tables.");
 	}
 
+	/**
+	 * Drops a single table in the database
+	 * @param table The table to drop
+	 */
 	private void dropTable(String table) {
 
 		try {
@@ -62,6 +89,11 @@ public class CreateDB {
 
 	}
 
+	
+	/**
+	 * Creates all the tables in the reverse order that they were dropped in 
+	 * This is required in order to maintain the constraints.
+	 */
 	public void createTables() {
 		// Reverse the array
 		List<String> tablesList = Arrays.asList(tables);
@@ -77,6 +109,10 @@ public class CreateDB {
 
 	}
 
+	/**
+	 * Creates a single table based on the sql in the if elseif 
+	 * @param table the table to create
+	 */
 	private void createTable(String table) {
 		String sql = "";
 		// Was originally a switch statement, converted to if-elseif-else
@@ -147,6 +183,11 @@ public class CreateDB {
 
 	}
 
+	/**
+	 * Populate the tables, simply calls all the private methods to populate 
+	 * The individual tables (which are not javadocced)
+	 * 
+	 */
 	public void populateTables() {
 
 		populateTitles();
